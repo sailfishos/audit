@@ -132,6 +132,7 @@ mkdir -p $RPM_BUILD_ROOT/{sbin,etc/audispd/plugins.d,etc/audit/rules.d}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/{man5,man8}
 mkdir -p $RPM_BUILD_ROOT/%{_lib}
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/audit
+mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 mkdir -p --mode=0700 $RPM_BUILD_ROOT/%{_var}/log/audit
 mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/audit
 make DESTDIR=$RPM_BUILD_ROOT install
@@ -162,7 +163,7 @@ touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
 touch -r ./audit.spec $RPM_BUILD_ROOT/usr/share/man/man5/libaudit.conf.5.gz
 
 # for some reason, the systemd service file needs to be installed manually
-cp init.d/auditd.service %{_unitdir}/auditd.service
+cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
 
 %check
 # Get rid of make files so that they don't get packaged.
@@ -235,7 +236,6 @@ fi
 %doc README ChangeLog rules init.d/auditd.cron
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%{_unitdir}/auditd.service
 %attr(644,root,root) %{_mandir}/man8/audispd.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditctl.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditd.8.gz
