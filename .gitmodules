@@ -1,0 +1,3 @@
+[submodule "audit-userspace"]
+	path = audit-userspace
+	url = https://github.com/linux-audit/audit-userspace.git
