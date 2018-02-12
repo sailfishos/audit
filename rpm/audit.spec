@@ -87,32 +87,6 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 The audit-libs-python3 package contains the bindings so that libaudit
 and libauparse can be used by python3.
 
-%package -n audispd-plugins
-Summary: Plugins for the audit event dispatcher
-License: GPLv2+
-Group: System Environment/Daemons
-Requires: %{name}%{?_isa} = %{version}-%{release}
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
-
-%description -n audispd-plugins
-The audispd-plugins package provides plugins for the real-time
-interface to the audit system, audispd. These plugins can do things
-like relay events to remote machines.
-
-%package -n audispd-plugins-zos
-Summary: z/OS plugin for the audit event dispatcher
-License: GPLv2+
-Group: System Environment/Daemons
-Requires: %{name}%{?_isa} = %{version}-%{release}
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
-Requires: openldap
-
-%description -n audispd-plugins-zos
-The audispd-plugins-zos package provides a plugin that will forward all
-incoming audit events, as they happen, to a configured z/OS SMF (Service
-Management Facility) database, through an IBM Tivoli Directory Server
-(ITDS) set for Remote Audit service.
-
 %prep
 %setup -q -n %{name}-%{version}/%{name}
 %patch0
@@ -121,7 +95,7 @@ cp %{SOURCE1} .
 %build
 ./autogen.sh
 %configure --sbindir=/sbin --libdir=/%{_lib} \
-           --with-python3=yes --without-golang \
+           --with-python=no --with-python3=yes --without-golang \
            --with-arm --with-aarch64 \
            --disable-zos-remote --enable-gssapi-krb-5=no \
            --enable-systemd --disable-listener
@@ -282,23 +256,6 @@ fi
 %config(noreplace) %attr(640,root,root) /etc/audisp/audispd.conf
 %config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/af_unix.conf
 %config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/syslog.conf
-
-%files -n audispd-plugins
-%defattr(-,root,root,-)
-%config(noreplace) %attr(640,root,root) /etc/audisp/audisp-remote.conf
-%config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/au-remote.conf
-%attr(750,root,root) /sbin/audisp-remote
-%attr(700,root,root) %dir %{_var}/spool/audit
-%attr(644,root,root) %{_mandir}/man5/audisp-remote.conf.5.gz
-%attr(644,root,root) %{_mandir}/man8/audisp-remote.8.gz
-
-%files -n audispd-plugins-zos
-%defattr(-,root,root,-)
-%attr(644,root,root) %{_mandir}/man8/audispd-zos-remote.8.gz
-%attr(644,root,root) %{_mandir}/man5/zos-remote.conf.5.gz
-%config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/audispd-zos-remote.conf
-%config(noreplace) %attr(640,root,root) /etc/audisp/zos-remote.conf
-%attr(750,root,root) /sbin/audispd-zos-remote
 
 %changelog
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.2-4
