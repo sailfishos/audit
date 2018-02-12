@@ -25,21 +25,14 @@
 Summary: User space tools for 2.6 kernel auditing
 Name: audit
 Version: 2.8.2
-Release: 4%{?dist}
+Release: 1%{?dist}
 License: GPLv2+
 Group: System Environment/Daemons
 URL: http://people.redhat.com/sgrubb/audit/
-Source0: http://people.redhat.com/sgrubb/audit/%{name}-%{version}.tar.gz
-Source1: https://www.gnu.org/licenses/lgpl-2.1.txt
-BuildRequires: openldap-devel
+Source0: %{name}-%{version}.tar.gz
+Source1: lgpl-2.1.txt
 BuildRequires: swig
-BuildRequires: krb5-devel libcap-ng-devel
 BuildRequires: kernel-headers >= 2.6.29
-%ifarch %{golang_arches}
-BuildRequires: golang
-# Temporary fix for make check in golang. Needs libaudit.so
-BuildRequires: audit-libs-devel
-%endif
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 BuildRequires: systemd
@@ -83,19 +76,6 @@ The audit-libs-static package contains the static libraries
 needed for developing applications that need to use static audit
 framework libraries
 
-%package libs-python2
-Summary: Python bindings for libaudit
-License: LGPLv2+
-Group: Development/Libraries
-BuildRequires: python2-devel
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
-Provides: audit-libs-python = %{version}-%{release}
-Obsoletes: audit-libs-python <= 2.8.2-2
-
-%description libs-python2
-The audit-libs-python2 package contains the bindings so that libaudit
-and libauparse can be used by python2.
-
 %package libs-python3
 Summary: Python3 bindings for libaudit
 License: LGPLv2+
@@ -134,18 +114,16 @@ Management Facility) database, through an IBM Tivoli Directory Server
 (ITDS) set for Remote Audit service.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}/%{name}
 cp %{SOURCE1} .
 
 %build
-%configure --sbindir=/sbin --libdir=/%{_lib} --with-python=yes \
-           --with-python3=yes --enable-gssapi-krb5=yes \
-           --with-libcap-ng=yes --with-arm --with-aarch64 \
-           --enable-zos-remote \
-%ifarch %{golang_arches}
-           --with-golang \
-%endif
-           --enable-systemd
+./autogen.sh
+%configure --sbindir=/sbin --libdir=/%{_lib} \
+           --with-python3=yes --without-golang \
+           --with-arm --with-aarch64 \
+           --disable-zos-remote --enable-gssapi-krb-5=no \
+           --enable-systemd --disable-listener
 
 make CFLAGS="%{optflags}" %{?_smp_mflags}
 
@@ -184,9 +162,6 @@ touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
 touch -r ./audit.spec $RPM_BUILD_ROOT/usr/share/man/man5/libaudit.conf.5.gz
 
 %check
-%ifarch %{golang_arches}
-make check
-%endif
 # Get rid of make files so that they don't get packaged.
 rm -f rules/Makefile*
 
@@ -233,10 +208,6 @@ fi
 %doc contrib/skeleton.c contrib/plugin
 %{_libdir}/libaudit.so
 %{_libdir}/libauparse.so
-%ifarch %{golang_arches}
-%dir %{_prefix}/lib/golang/src/pkg/redhat.com/audit
-%{_prefix}/lib/golang/src/pkg/redhat.com/audit/audit.go
-%endif
 %{_includedir}/libaudit.h
 %{_includedir}/auparse.h
 %{_includedir}/auparse-defs.h
@@ -252,12 +223,6 @@ fi
 %{_libdir}/libaudit.a
 %{_libdir}/libauparse.a
 
-%files libs-python2
-%defattr(-,root,root,-)
-%attr(755,root,root) %{python_sitearch}/_audit.so
-%attr(755,root,root) %{python_sitearch}/auparse.so
-%{python_sitearch}/audit.py*
-
 %files libs-python3
 %defattr(-,root,root,-)
 %attr(755,root,root) %{python3_sitearch}/*
@@ -267,6 +232,7 @@ fi
 %doc README ChangeLog rules init.d/auditd.cron
 %{!?_licensedir:%global license %%doc}
 %license COPYING
+init.d/auditd.service %{_unitdir}/auditd.service
 %attr(644,root,root) %{_mandir}/man8/audispd.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditctl.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditd.8.gz
