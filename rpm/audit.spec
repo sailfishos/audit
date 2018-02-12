@@ -20,7 +20,6 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Summary: User space tools for 2.6 kernel auditing
 Name: audit
@@ -231,7 +230,7 @@ fi
 
 %files libs-python3
 %defattr(-,root,root,-)
-%attr(755,root,root) %{python3_sitearch}/*
+%attr(755,root,root) /%{_libdir}/python3.?/site-packages
 
 %files
 %defattr(-,root,root,-)
