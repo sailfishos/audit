@@ -31,6 +31,7 @@ Group: System Environment/Daemons
 URL: http://people.redhat.com/sgrubb/audit/
 Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
+Patch0: systemd_unitdir.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 
@@ -115,6 +116,7 @@ Management Facility) database, through an IBM Tivoli Directory Server
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
+%patch0
 cp %{SOURCE1} .
 
 %build

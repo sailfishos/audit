@@ -1,0 +1,12 @@
+diff -uNr /init.d/Makefile.am audit_new/init.d/Makefile.am
+--- init.d/Makefile.am	2018-02-12 12:49:26.085464964 +0000
++++ init.d/Makefile.am	2018-02-12 14:24:13.684992006 +0000
+@@ -30,7 +30,7 @@
+ dispconfig = audispd.conf
+ dispconfigdir = $(sysconfdir)/audisp
+ if ENABLE_SYSTEMD
+-initdir = /usr/lib/systemd/system
++initdir = /lib/systemd/system
+ legacydir = $(libexecdir)/initscripts/legacy-actions/auditd
+ else
+ initdir = $(sysconfdir)/rc.d/init.d
