@@ -260,6 +260,10 @@ fi
 %config(noreplace) %attr(640,root,root) /etc/audisp/audispd.conf
 
 %changelog
+* Tue Feb 13 2018 Oliver Schmidt <oliver.schmidt@jollamobile.com>
+- adjustments for Mer, conversion to tar_git package
+- also reducing needed dependencies
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
