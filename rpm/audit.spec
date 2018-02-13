@@ -31,6 +31,7 @@ URL: http://people.redhat.com/sgrubb/audit/
 Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
 Patch0: systemd_unitdir.patch
+Patch1: no_audisp_plugins.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 
@@ -90,6 +91,7 @@ and libauparse can be used by python3.
 %prep
 %setup -q -n %{name}-%{version}/%{name}
 %patch0
+%patch1
 cp %{SOURCE1} .
 
 %build
@@ -104,6 +106,8 @@ make CFLAGS="%{optflags}" %{?_smp_mflags}
 
 %install
 mkdir -p $RPM_BUILD_ROOT/{sbin,etc/audispd/plugins.d,etc/audit/rules.d}
+# for some reason audisp appears to be a file without this
+mkdir -p $RPM_BUILD_ROOT/etc/audisp
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/{man5,man8}
 mkdir -p $RPM_BUILD_ROOT/%{_lib}
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/audit
@@ -248,14 +252,11 @@ fi
 %attr(750,root,root) %dir /etc/audit
 %attr(750,root,root) %dir /etc/audit/rules.d
 %attr(750,root,root) %dir /etc/audisp
-%attr(750,root,root) %dir /etc/audisp/plugins.d
 %config(noreplace) %attr(640,root,root) /etc/audit/auditd.conf
 %ghost %config(noreplace) %attr(640,root,root) /etc/audit/rules.d/audit.rules
 %ghost %config(noreplace) %attr(640,root,root) /etc/audit/audit.rules
 %config(noreplace) %attr(640,root,root) /etc/audit/audit-stop.rules
 %config(noreplace) %attr(640,root,root) /etc/audisp/audispd.conf
-%config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/af_unix.conf
-%config(noreplace) %attr(640,root,root) /etc/audisp/plugins.d/syslog.conf
 
 %changelog
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.2-4
