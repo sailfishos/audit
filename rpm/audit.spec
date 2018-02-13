@@ -244,6 +244,7 @@ fi
 %attr(644,root,root) %{_unitdir}/auditd.service
 %attr(750,root,root) %dir %{_libexecdir}/initscripts/legacy-actions/auditd
 %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/resume
+%attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/reload
 %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/rotate
 %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/stop
 %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/restart
