@@ -34,6 +34,7 @@ Patch0: systemd_unitdir.patch
 Patch1: no_audisp_plugins.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
+BuildRequires: automake autoconf libtool
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 BuildRequires: systemd
