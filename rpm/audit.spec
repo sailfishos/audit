@@ -40,7 +40,7 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 BuildRequires: systemd
 # do we really need this?
 #Requires(post): systemd-units systemd-sysv chkconfig
-Requires(pos): coreutils
+Requires(post): coreutils
 Requires(preun): systemd-units
 Requires(postun): systemd-units coreutils
 
