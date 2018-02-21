@@ -149,7 +149,7 @@ cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
 
 %check
 # Get rid of make files so that they don't get packaged.
-#rm -f rules/Makefile*
+rm -f rules/Makefile*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
