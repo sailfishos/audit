@@ -41,8 +41,7 @@ BuildRequires: systemd
 # do we really need this?
 #Requires(post): systemd-units systemd-sysv chkconfig
 Requires(post): coreutils
-Requires(preun): systemd-units
-Requires(postun): systemd-units coreutils
+Requires(postun): coreutils
 
 %description
 The audit package contains the user space utilities for
