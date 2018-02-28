@@ -159,9 +159,9 @@ rm -rf $RPM_BUILD_ROOT
 # Copy default rules into place on new installation
 files=`ls /etc/audit/rules.d/ 2>/dev/null | wc -w`
 if [ "$files" -eq 0 ] ; then
-# FESCO asked for audit to be off by default. #1117953
+# turn audit off by default (Fedora bug #1117953)
 	if [ -e /usr/share/doc/audit/rules/10-no-audit.rules ] ; then
-	        cp /usr/share/doc/audit/rules/10-no-audit.rules /etc/audit/rules.d/audit.rules
+	        cp /usr/share/doc/audit-{%version}/rules/10-no-audit.rules /etc/audit/rules.d/audit.rules
 	else
 		touch /etc/audit/rules.d/audit.rules
 	fi
