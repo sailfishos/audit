@@ -32,6 +32,7 @@ Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
 Patch0: systemd_unitdir.patch
 Patch1: no_audisp_plugins.patch
+Patch2: doc_remove_zos_pages.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 BuildRequires: automake autoconf libtool
@@ -92,8 +93,9 @@ and libauparse can be used by python3.
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
-%patch0
-%patch1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 cp %{SOURCE1} .
 
 %build

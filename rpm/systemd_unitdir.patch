@@ -1,7 +1,8 @@
-diff -uNr /init.d/Makefile.am audit_new/init.d/Makefile.am
---- init.d/Makefile.am	2018-02-12 12:49:26.085464964 +0000
-+++ init.d/Makefile.am	2018-02-12 14:24:13.684992006 +0000
-@@ -30,7 +30,7 @@
+diff --git a/init.d/Makefile.am b/init.d/Makefile.am
+index ebe52c2..9f7d412 100644
+--- a/init.d/Makefile.am
++++ b/init.d/Makefile.am
+@@ -30,7 +30,7 @@ libconfig = libaudit.conf
  dispconfig = audispd.conf
  dispconfigdir = $(sysconfdir)/audisp
  if ENABLE_SYSTEMD
