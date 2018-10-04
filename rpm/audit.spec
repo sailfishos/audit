@@ -23,7 +23,7 @@
 
 Summary: User space tools for 2.6 kernel auditing
 Name: audit
-Version: 2.8.2
+Version: 2.8.4
 Release: 1%{?dist}
 License: GPLv2+
 Group: System Environment/Daemons
