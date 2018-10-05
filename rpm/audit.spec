@@ -96,7 +96,7 @@ and libauparse can be used by python3.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-cp %{SOURCE1} .
+
 
 %build
 ./autogen.sh
@@ -109,6 +109,7 @@ cp %{SOURCE1} .
 make CFLAGS="%{optflags}" %{?_smp_mflags}
 
 %install
+cp %{SOURCE1} .
 mkdir -p $RPM_BUILD_ROOT/{sbin,etc/audispd/plugins.d,etc/audit/rules.d}
 # for some reason audisp appears to be a file without this
 mkdir -p $RPM_BUILD_ROOT/etc/audisp
@@ -120,12 +121,12 @@ mkdir -p --mode=0700 $RPM_BUILD_ROOT/%{_var}/log/audit
 mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/audit
 make DESTDIR=$RPM_BUILD_ROOT install
 
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}
+mkdir -p $RPM_BUILD_ROOT%{_libdir}
 # This winds up in the wrong place when libtool is involved
 mv $RPM_BUILD_ROOT/%{_lib}/libaudit.a $RPM_BUILD_ROOT%{_libdir}
 mv $RPM_BUILD_ROOT/%{_lib}/libauparse.a $RPM_BUILD_ROOT%{_libdir}
 curdir=`pwd`
-cd $RPM_BUILD_ROOT/%{_libdir}
+cd $RPM_BUILD_ROOT%{_libdir}
 LIBNAME=`basename \`ls $RPM_BUILD_ROOT/%{_lib}/libaudit.so.1.*.*\``
 ln -s ../../%{_lib}/$LIBNAME libaudit.so
 LIBNAME=`basename \`ls $RPM_BUILD_ROOT/%{_lib}/libauparse.so.0.*.*\``
@@ -136,7 +137,7 @@ rm -f $RPM_BUILD_ROOT/%{_lib}/libaudit.so
 rm -f $RPM_BUILD_ROOT/%{_lib}/libauparse.so
 
 find $RPM_BUILD_ROOT -name '*.la' -delete
-find $RPM_BUILD_ROOT/%{_libdir}/python?.?/site-packages -name '*.a' -delete
+find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
 
 # Move the pkgconfig file
 mv $RPM_BUILD_ROOT/%{_lib}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
