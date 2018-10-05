@@ -154,6 +154,10 @@ install -m 0644 rules/10-no-audit.rules %{buildroot}%{_sysconfdir}/%{name}/audit
 # for some reason, the systemd service file needs to be installed manually
 cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
 
+# Install libaudit.conf files by hand
+install -m 0644 docs/libaudit.conf.5 %{buildroot}/%{_mandir}/man5
+install -m 0644 init.d/libaudit.conf %{buildroot}%{_sysconfdir}
+
 %check
 # Get rid of make files so that they don't get packaged.
 rm -f rules/Makefile*
