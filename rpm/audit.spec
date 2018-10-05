@@ -146,6 +146,11 @@ mv $RPM_BUILD_ROOT/%{_lib}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
 touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
 touch -r ./audit.spec $RPM_BUILD_ROOT/usr/share/man/man5/libaudit.conf.5.gz
 
+# From https://build.opensuse.org/package/view_file/openSUSE:Factory/audit/audit-secondary.spec
+# Starting with audit 2.5 no config is installed so start with no rules
+install -m 0644 rules/10-no-audit.rules %{buildroot}%{_sysconfdir}/%{name}/rules.d/audit.rules
+install -m 0644 rules/10-no-audit.rules %{buildroot}%{_sysconfdir}/%{name}/audit.rules
+
 # for some reason, the systemd service file needs to be installed manually
 cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
 
