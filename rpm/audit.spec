@@ -125,9 +125,6 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}
 find $RPM_BUILD_ROOT -name '*.la' -delete
 find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
 
-# Move the pkgconfig file
-mv $RPM_BUILD_ROOT/%{_libdir}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
-
 # On platforms with 32 & 64 bit libs, we need to coordinate the timestamp
 touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
 touch -r ./audit.spec $RPM_BUILD_ROOT/usr/share/man/man5/libaudit.conf.5.gz
