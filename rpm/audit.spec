@@ -37,7 +37,7 @@ BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 BuildRequires: automake autoconf libtool
 
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 BuildRequires: systemd
 # do we really need this?
 #Requires(post): systemd-units systemd-sysv chkconfig
@@ -62,7 +62,7 @@ applications to use the audit framework.
 Summary: Header files for libaudit
 License: LGPLv2+
 Group: Development/Libraries
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 Requires: kernel-headers >= 2.6.29
 
 %description libs-devel
@@ -85,7 +85,7 @@ Summary: Python3 bindings for libaudit
 License: LGPLv2+
 Group: Development/Libraries
 BuildRequires: python3-devel
-Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 
 %description libs-python3
 The audit-libs-python3 package contains the bindings so that libaudit
