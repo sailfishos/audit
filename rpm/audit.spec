@@ -100,7 +100,7 @@ and libauparse can be used by python3.
 
 %build
 ./autogen.sh
-%configure --sbindir=/sbin --libdir=/%{_lib} \
+%configure --sbindir=%{_sbindir} --libdir=/%{_libdir} \
            --with-python=no --with-python3=yes --without-golang \
            --with-arm --with-aarch64 \
            --disable-zos-remote --enable-gssapi-krb-5=no \
@@ -114,7 +114,6 @@ mkdir -p $RPM_BUILD_ROOT/{sbin,etc/audispd/plugins.d,etc/audit/rules.d}
 # for some reason audisp appears to be a file without this
 mkdir -p $RPM_BUILD_ROOT/etc/audisp
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/{man5,man8}
-mkdir -p $RPM_BUILD_ROOT/%{_lib}
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/audit
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 mkdir -p --mode=0700 $RPM_BUILD_ROOT/%{_var}/log/audit
@@ -122,25 +121,12 @@ mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/audit
 make DESTDIR=$RPM_BUILD_ROOT install
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
-# This winds up in the wrong place when libtool is involved
-mv $RPM_BUILD_ROOT/%{_lib}/libaudit.a $RPM_BUILD_ROOT%{_libdir}
-mv $RPM_BUILD_ROOT/%{_lib}/libauparse.a $RPM_BUILD_ROOT%{_libdir}
-curdir=`pwd`
-cd $RPM_BUILD_ROOT%{_libdir}
-LIBNAME=`basename \`ls $RPM_BUILD_ROOT/%{_lib}/libaudit.so.1.*.*\``
-ln -s ../../%{_lib}/$LIBNAME libaudit.so
-LIBNAME=`basename \`ls $RPM_BUILD_ROOT/%{_lib}/libauparse.so.0.*.*\``
-ln -s ../../%{_lib}/$LIBNAME libauparse.so
-cd $curdir
-# Remove these items so they don't get picked up.
-rm -f $RPM_BUILD_ROOT/%{_lib}/libaudit.so
-rm -f $RPM_BUILD_ROOT/%{_lib}/libauparse.so
 
 find $RPM_BUILD_ROOT -name '*.la' -delete
 find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
 
 # Move the pkgconfig file
-mv $RPM_BUILD_ROOT/%{_lib}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
+mv $RPM_BUILD_ROOT/%{_libdir}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
 
 # On platforms with 32 & 64 bit libs, we need to coordinate the timestamp
 touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
@@ -195,8 +181,8 @@ fi
 %defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license lgpl-2.1.txt
-/%{_lib}/libaudit.so.1*
-/%{_lib}/libauparse.*
+/%{_libdir}/libaudit.so.1*
+/%{_libdir}/libauparse.*
 %config(noreplace) %attr(640,root,root) /etc/libaudit.conf
 %{_mandir}/man5/libaudit.conf.5.gz
 
@@ -244,13 +230,13 @@ fi
 %attr(644,root,root) %{_mandir}/man5/auditd.conf.5.gz
 %attr(644,root,root) %{_mandir}/man5/audispd.conf.5.gz
 %attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
-%attr(755,root,root) /sbin/auditctl
-%attr(755,root,root) /sbin/auditd
-%attr(755,root,root) /sbin/ausearch
-%attr(755,root,root) /sbin/aureport
-%attr(750,root,root) /sbin/autrace
-%attr(755,root,root) /sbin/audispd
-%attr(755,root,root) /sbin/augenrules
+%attr(755,root,root) %{_sbindir}/auditctl
+%attr(755,root,root) %{_sbindir}/auditd
+%attr(755,root,root) %{_sbindir}/ausearch
+%attr(755,root,root) %{_sbindir}/aureport
+%attr(750,root,root) %{_sbindir}/autrace
+%attr(755,root,root) %{_sbindir}/audispd
+%attr(755,root,root) %{_sbindir}/augenrules
 %attr(755,root,root) %{_bindir}/aulast
 %attr(755,root,root) %{_bindir}/aulastlog
 %attr(755,root,root) %{_bindir}/ausyscall
