@@ -39,8 +39,7 @@ BuildRequires: automake autoconf libtool
 
 Requires: %{name}-libs = %{version}-%{release}
 BuildRequires: systemd
-# do we really need this?
-#Requires(post): systemd-units systemd-sysv chkconfig
+Requires(post): systemd-sysv
 Requires(post): coreutils
 Requires(postun): coreutils
 
