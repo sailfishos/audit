@@ -194,6 +194,21 @@ fi
 %{_libdir}/pkgconfig/audit.pc
 %{_libdir}/pkgconfig/auparse.pc
 %{_mandir}/man3/*
+%attr(644,root,root) %{_mandir}/man8/audispd.8.gz
+%attr(644,root,root) %{_mandir}/man8/auditctl.8.gz
+%attr(644,root,root) %{_mandir}/man8/auditd.8.gz
+%attr(644,root,root) %{_mandir}/man8/aureport.8.gz
+%attr(644,root,root) %{_mandir}/man8/ausearch.8.gz
+%attr(644,root,root) %{_mandir}/man8/autrace.8.gz
+%attr(644,root,root) %{_mandir}/man8/aulast.8.gz
+%attr(644,root,root) %{_mandir}/man8/aulastlog.8.gz
+%attr(644,root,root) %{_mandir}/man8/auvirt.8.gz
+%attr(644,root,root) %{_mandir}/man8/augenrules.8.gz
+%attr(644,root,root) %{_mandir}/man8/ausyscall.8.gz
+%attr(644,root,root) %{_mandir}/man7/audit.rules.7.gz
+%attr(644,root,root) %{_mandir}/man5/auditd.conf.5.gz
+%attr(644,root,root) %{_mandir}/man5/audispd.conf.5.gz
+%attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
 
 %files libs-static
 %defattr(-,root,root,-)
@@ -211,21 +226,6 @@ fi
 %doc README ChangeLog rules init.d/auditd.cron
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%attr(644,root,root) %{_mandir}/man8/audispd.8.gz
-%attr(644,root,root) %{_mandir}/man8/auditctl.8.gz
-%attr(644,root,root) %{_mandir}/man8/auditd.8.gz
-%attr(644,root,root) %{_mandir}/man8/aureport.8.gz
-%attr(644,root,root) %{_mandir}/man8/ausearch.8.gz
-%attr(644,root,root) %{_mandir}/man8/autrace.8.gz
-%attr(644,root,root) %{_mandir}/man8/aulast.8.gz
-%attr(644,root,root) %{_mandir}/man8/aulastlog.8.gz
-%attr(644,root,root) %{_mandir}/man8/auvirt.8.gz
-%attr(644,root,root) %{_mandir}/man8/augenrules.8.gz
-%attr(644,root,root) %{_mandir}/man8/ausyscall.8.gz
-%attr(644,root,root) %{_mandir}/man7/audit.rules.7.gz
-%attr(644,root,root) %{_mandir}/man5/auditd.conf.5.gz
-%attr(644,root,root) %{_mandir}/man5/audispd.conf.5.gz
-%attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
 %attr(755,root,root) %{_sbindir}/auditctl
 %attr(755,root,root) %{_sbindir}/auditd
 %attr(755,root,root) %{_sbindir}/ausearch
