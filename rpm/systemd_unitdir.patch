@@ -1,0 +1,13 @@
+diff --git a/init.d/Makefile.am b/init.d/Makefile.am
+index ebe52c2..9f7d412 100644
+--- a/init.d/Makefile.am
++++ b/init.d/Makefile.am
+@@ -30,7 +30,7 @@ libconfig = libaudit.conf
+ dispconfig = audispd.conf
+ dispconfigdir = $(sysconfdir)/audisp
+ if ENABLE_SYSTEMD
+-initdir = /usr/lib/systemd/system
++initdir = /lib/systemd/system
+ legacydir = $(libexecdir)/initscripts/legacy-actions/auditd
+ else
+ initdir = $(sysconfdir)/rc.d/init.d

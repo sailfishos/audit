@@ -1,0 +1,13 @@
+diff --git a/audisp/Makefile.am b/audisp/Makefile.am
+index 2cedd54..877cb7f 100644
+--- a/audisp/Makefile.am
++++ b/audisp/Makefile.am
+@@ -20,7 +20,7 @@
+ #   Steve Grubb <sgrubb@redhat.com>
+ #
+ 
+-SUBDIRS = plugins 
++SUBDIRS = 
+ CONFIG_CLEAN_FILES = *.rej *.orig
+ AUTOMAKE_OPTIONS = no-dependencies
+ AM_CPPFLAGS = -I${top_srcdir} -I${top_srcdir}/lib
