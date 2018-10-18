@@ -1,0 +1,13 @@
+diff --git a/init.d/augenrules b/init.d/augenrules
+index e6143a3..b5081c2 100644
+--- a/init.d/augenrules
++++ b/init.d/augenrules
+@@ -39,7 +39,7 @@ trap 'rm -f ${TmpRules}; exit 1' 1 2 3 13 15
+ 
+ try_load() {
+ 	if [ $LoadRules -eq 1 ] ; then
+-		/sbin/auditctl -R ${DestinationFile}
++		/usr/sbin/auditctl -R ${DestinationFile}
+ 		RETVAL=$?
+ 	fi
+ }

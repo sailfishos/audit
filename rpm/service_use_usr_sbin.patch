@@ -1,0 +1,24 @@
+diff --git a/init.d/auditd.service b/init.d/auditd.service
+index 7932e0c..8ff4f4d 100644
+--- a/init.d/auditd.service
++++ b/init.d/auditd.service
+@@ -14,15 +14,15 @@ Documentation=man:auditd(8) https://github.com/linux-audit/audit-documentation
+ [Service]
+ Type=forking
+ PIDFile=/var/run/auditd.pid
+-ExecStart=/sbin/auditd
++ExecStart=/usr/sbin/auditd
+ ## To not use augenrules, copy this file to /etc/systemd/system/auditd.service
+ ## and comment/delete the next line and uncomment the auditctl line.
+ ## NOTE: augenrules expect any rules to be added to /etc/audit/rules.d/
+-ExecStartPost=-/sbin/augenrules --load
+-#ExecStartPost=-/sbin/auditctl -R /etc/audit/audit.rules
++ExecStartPost=-/usr/sbin/augenrules --load
++#ExecStartPost=-/usr/sbin/auditctl -R /etc/audit/audit.rules
+ # By default we don't clear the rules on exit. To enable this, uncomment
+ # the next line after copying the file to /etc/systemd/system/auditd.service
+-#ExecStopPost=/sbin/auditctl -R /etc/audit/audit-stop.rules
++#ExecStopPost=/usr/sbin/auditctl -R /etc/audit/audit-stop.rules
+ 
+ [Install]
+ WantedBy=multi-user.target

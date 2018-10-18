@@ -1,0 +1,13 @@
+diff --git a/init.d/auditd.conf b/init.d/auditd.conf
+index 4dcda83..998904f 100644
+--- a/init.d/auditd.conf
++++ b/init.d/auditd.conf
+@@ -13,7 +13,7 @@ max_log_file = 8
+ num_logs = 5
+ priority_boost = 4
+ disp_qos = lossy
+-dispatcher = /sbin/audispd
++dispatcher = /usr/sbin/audispd
+ name_format = NONE
+ ##name = mydomain
+ max_log_file_action = ROTATE
