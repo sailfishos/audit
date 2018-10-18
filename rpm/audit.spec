@@ -33,6 +33,9 @@ Source1: lgpl-2.1.txt
 Patch0: systemd_unitdir.patch
 Patch1: no_audisp_plugins.patch
 Patch2: doc_remove_zos_pages.patch
+Patch3: conf_use_usr_sbin.patch
+Patch4: service_use_usr_sbin.patch
+Patch5: augenrules_use_usr_sbin.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 BuildRequires: automake autoconf libtool
@@ -95,11 +98,13 @@ and libauparse can be used by python3.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 ./autogen.sh
-%configure --sbindir=%{_sbindir} --libdir=/%{_libdir} \
+%configure --sbindir=%{_sbindir} --libdir=%{_libdir} \
            --with-python=no --with-python3=yes --without-golang \
            --with-arm --with-aarch64 \
            --disable-zos-remote --enable-gssapi-krb-5=no \
