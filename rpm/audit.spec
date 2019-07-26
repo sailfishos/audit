@@ -116,7 +116,7 @@ make CFLAGS="%{optflags}" %{?_smp_mflags}
 cp %{SOURCE1} .
 mkdir -p $RPM_BUILD_ROOT/{sbin,etc/audispd/plugins.d,etc/audit/rules.d}
 # for some reason audisp appears to be a file without this
-mkdir -p $RPM_BUILD_ROOT/etc/audisp
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/audisp
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/{man5,man8}
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/audit
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
@@ -130,7 +130,7 @@ find $RPM_BUILD_ROOT -name '*.la' -delete
 find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
 
 # On platforms with 32 & 64 bit libs, we need to coordinate the timestamp
-touch -r ./audit.spec $RPM_BUILD_ROOT/etc/libaudit.conf
+touch -r ./audit.spec $RPM_BUILD_ROOT%{_sysconfdir}/libaudit.conf
 touch -r ./audit.spec $RPM_BUILD_ROOT/usr/share/man/man5/libaudit.conf.5.gz
 
 # From https://build.opensuse.org/package/view_file/openSUSE:Factory/audit/audit-secondary.spec
@@ -156,15 +156,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 # Copy default rules into place on new installation
-files=`ls /etc/audit/rules.d/ 2>/dev/null | wc -w`
+files=`ls %{_sysconfdir}/audit/rules.d/ 2>/dev/null | wc -w`
 if [ "$files" -eq 0 ] ; then
 # turn audit off by default (Fedora bug #1117953)
 	if [ -e /usr/share/doc/audit/rules/10-no-audit.rules ] ; then
-	        cp /usr/share/doc/audit-{%version}/rules/10-no-audit.rules /etc/audit/rules.d/audit.rules
+	        cp /usr/share/doc/audit-{%version}/rules/10-no-audit.rules %{_sysconfdir}/audit/rules.d/audit.rules
 	else
-		touch /etc/audit/rules.d/audit.rules
+		touch %{_sysconfdir}/audit/rules.d/audit.rules
 	fi
-	chmod 0600 /etc/audit/rules.d/audit.rules
+	chmod 0600 %{_sysconfdir}/audit/rules.d/audit.rules
 fi
 %systemd_post auditd.service
 
@@ -184,7 +184,7 @@ fi
 %license lgpl-2.1.txt
 /%{_libdir}/libaudit.so.1*
 /%{_libdir}/libauparse.*
-%config(noreplace) %attr(640,root,root) /etc/libaudit.conf
+%config %attr(640,root,root) %{_sysconfdir}/libaudit.conf
 %{_mandir}/man5/libaudit.conf.5.gz
 
 %files libs-devel
@@ -252,11 +252,11 @@ fi
 %exclude %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/condrestart
 %exclude %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/state
 %attr(750,root,root) %dir %{_var}/log/audit
-%attr(750,root,root) %dir /etc/audit
-%attr(750,root,root) %dir /etc/audit/rules.d
-%attr(750,root,root) %dir /etc/audisp
-%config(noreplace) %attr(640,root,root) /etc/audit/auditd.conf
-%ghost %config(noreplace) %attr(640,root,root) /etc/audit/rules.d/audit.rules
-%ghost %config(noreplace) %attr(640,root,root) /etc/audit/audit.rules
-%config(noreplace) %attr(640,root,root) /etc/audit/audit-stop.rules
-%config(noreplace) %attr(640,root,root) /etc/audisp/audispd.conf
+%attr(750,root,root) %dir %{_sysconfdir}/audit
+%attr(750,root,root) %dir %{_sysconfdir}/audit/rules.d
+%attr(750,root,root) %dir %{_sysconfdir}/audisp
+%config %attr(640,root,root) %{_sysconfdir}/audit/auditd.conf
+%ghost %config %attr(640,root,root) %{_sysconfdir}/audit/rules.d/audit.rules
+%ghost %config %attr(640,root,root) %{_sysconfdir}/audit/audit.rules
+%config %attr(640,root,root) %{_sysconfdir}/audit/audit-stop.rules
+%config %attr(640,root,root) %{_sysconfdir}/audisp/audispd.conf
