@@ -30,7 +30,6 @@ Group: System Environment/Daemons
 URL: http://people.redhat.com/sgrubb/audit/
 Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
-Patch0: systemd_unitdir.patch
 Patch1: no_audisp_plugins.patch
 Patch2: doc_remove_zos_pages.patch
 Patch3: conf_use_usr_sbin.patch
@@ -94,13 +93,7 @@ The audit-libs-python3 package contains the bindings so that libaudit
 and libauparse can be used by python3.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 ./autogen.sh
