@@ -1,3 +1,3 @@
 [submodule "audit"]
 	path = audit
-	url = https://git.merproject.org/mirror/audit.git
+	url = https://github.com/sailfishos-mirror/audit.git
