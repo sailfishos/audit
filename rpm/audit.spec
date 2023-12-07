@@ -23,7 +23,7 @@
 
 Summary: User space tools for 2.6 kernel auditing
 Name: audit
-Version: 2.8.4
+Version: 3.1.2
 Release: 1
 License: GPLv2+
 URL: http://people.redhat.com/sgrubb/audit/
@@ -31,9 +31,8 @@ Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
 Patch1: no_audisp_plugins.patch
 Patch2: doc_remove_zos_pages.patch
-Patch3: conf_use_usr_sbin.patch
-Patch4: service_use_usr_sbin.patch
-Patch5: augenrules_use_usr_sbin.patch
+Patch3: service_use_usr_sbin.patch
+Patch4: augenrules_use_usr_sbin.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 BuildRequires: automake autoconf libtool
@@ -67,16 +66,6 @@ Requires: kernel-headers >= 2.6.29
 The audit-libs-devel package contains the header files needed for
 developing applications that need to use the audit framework libraries.
 
-%package libs-static
-Summary: Static version of libaudit library
-License: LGPLv2+
-Requires: kernel-headers >= 2.6.29
-
-%description libs-static
-The audit-libs-static package contains the static libraries
-needed for developing applications that need to use static audit
-framework libraries
-
 %package libs-python3
 Summary: Python3 bindings for libaudit
 License: LGPLv2+
@@ -98,7 +87,7 @@ and libauparse can be used by python3.
            --disable-zos-remote --enable-gssapi-krb-5=no \
            --enable-systemd --disable-listener
 
-make CFLAGS="%{optflags}" %{?_smp_mflags}
+%make_build
 
 %install
 cp %{SOURCE1} .
@@ -110,9 +99,12 @@ mkdir -p $RPM_BUILD_ROOT/%{_libdir}/audit
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 mkdir -p --mode=0700 $RPM_BUILD_ROOT/%{_var}/log/audit
 mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/audit
-make DESTDIR=$RPM_BUILD_ROOT install
+%make_install
 
-mkdir -p $RPM_BUILD_ROOT%{_libdir}
+
+# Remove these items so they don't get picked up.
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libaudit.a
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libauparse.a
 
 find $RPM_BUILD_ROOT -name '*.la' -delete
 find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
@@ -127,18 +119,15 @@ install -m 0644 rules/10-no-audit.rules %{buildroot}%{_sysconfdir}/%{name}/rules
 install -m 0644 rules/10-no-audit.rules %{buildroot}%{_sysconfdir}/%{name}/audit.rules
 
 # for some reason, the systemd service file needs to be installed manually
-cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
+#cp init.d/auditd.service $RPM_BUILD_ROOT%{_unitdir}/auditd.service
 
 # Install libaudit.conf files by hand
-install -m 0644 docs/libaudit.conf.5 %{buildroot}/%{_mandir}/man5
-install -m 0644 init.d/libaudit.conf %{buildroot}%{_sysconfdir}
+#install -m 0644 docs/libaudit.conf.5 %{buildroot}/%{_mandir}/man5
+#install -m 0644 init.d/libaudit.conf %{buildroot}%{_sysconfdir}
 
 %check
 # Get rid of make files so that they don't get packaged.
 rm -f rules/Makefile*
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post libs -p /sbin/ldconfig
 
@@ -177,7 +166,7 @@ fi
 
 %files libs-devel
 %defattr(-,root,root,-)
-%doc contrib/skeleton.c contrib/plugin
+%doc contrib/plugin
 %{_libdir}/libaudit.so
 %{_libdir}/libauparse.so
 %{_includedir}/libaudit.h
@@ -187,7 +176,6 @@ fi
 %{_libdir}/pkgconfig/audit.pc
 %{_libdir}/pkgconfig/auparse.pc
 %{_mandir}/man3/*
-%attr(644,root,root) %{_mandir}/man8/audispd.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditctl.8.gz
 %attr(644,root,root) %{_mandir}/man8/auditd.8.gz
 %attr(644,root,root) %{_mandir}/man8/aureport.8.gz
@@ -200,15 +188,8 @@ fi
 %attr(644,root,root) %{_mandir}/man8/ausyscall.8.gz
 %attr(644,root,root) %{_mandir}/man7/audit.rules.7.gz
 %attr(644,root,root) %{_mandir}/man5/auditd.conf.5.gz
-%attr(644,root,root) %{_mandir}/man5/audispd.conf.5.gz
+%attr(644,root,root) %{_mandir}/man5/auditd-plugins.5.gz
 %attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
-
-%files libs-static
-%defattr(-,root,root,-)
-%{!?_licensedir:%global license %%doc}
-%license lgpl-2.1.txt
-%{_libdir}/libaudit.a
-%{_libdir}/libauparse.a
 
 %files libs-python3
 %defattr(-,root,root,-)
@@ -219,12 +200,12 @@ fi
 %doc README ChangeLog rules init.d/auditd.cron
 %{!?_licensedir:%global license %%doc}
 %license COPYING
+%attr(755,root,root) %{_datadir}/%{name}
 %attr(755,root,root) %{_sbindir}/auditctl
 %attr(755,root,root) %{_sbindir}/auditd
 %attr(755,root,root) %{_sbindir}/ausearch
 %attr(755,root,root) %{_sbindir}/aureport
 %attr(750,root,root) %{_sbindir}/autrace
-%attr(755,root,root) %{_sbindir}/audispd
 %attr(755,root,root) %{_sbindir}/augenrules
 %attr(755,root,root) %{_bindir}/aulast
 %attr(755,root,root) %{_bindir}/aulastlog
@@ -239,6 +220,7 @@ fi
 %exclude %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/restart
 %exclude %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/condrestart
 %exclude %attr(750,root,root) %{_libexecdir}/initscripts/legacy-actions/auditd/state
+%exclude %attr(750,root,root) %{_libexecdir}/audit-functions
 %attr(750,root,root) %dir %{_var}/log/audit
 %attr(750,root,root) %dir %{_sysconfdir}/audit
 %attr(750,root,root) %dir %{_sysconfdir}/audit/rules.d
@@ -247,4 +229,3 @@ fi
 %ghost %config %attr(640,root,root) %{_sysconfdir}/audit/rules.d/audit.rules
 %ghost %config %attr(640,root,root) %{_sysconfdir}/audit/audit.rules
 %config %attr(640,root,root) %{_sysconfdir}/audit/audit-stop.rules
-%config %attr(640,root,root) %{_sysconfdir}/audisp/audispd.conf
