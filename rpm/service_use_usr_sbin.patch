@@ -2,10 +2,10 @@ diff --git a/init.d/auditd.service b/init.d/auditd.service
 index 7932e0c..8ff4f4d 100644
 --- a/init.d/auditd.service
 +++ b/init.d/auditd.service
-@@ -14,15 +14,15 @@ Documentation=man:auditd(8) https://github.com/linux-audit/audit-documentation
+@@ -20,15 +20,15 @@ Documentation=man:auditd(8) https://github.com/linux-audit/audit-documentation
  [Service]
  Type=forking
- PIDFile=/var/run/auditd.pid
+ PIDFile=/run/auditd.pid
 -ExecStart=/sbin/auditd
 +ExecStart=/usr/sbin/auditd
  ## To not use augenrules, copy this file to /etc/systemd/system/auditd.service
@@ -19,6 +19,6 @@ index 7932e0c..8ff4f4d 100644
  # the next line after copying the file to /etc/systemd/system/auditd.service
 -#ExecStopPost=/sbin/auditctl -R /etc/audit/audit-stop.rules
 +#ExecStopPost=/usr/sbin/auditctl -R /etc/audit/audit-stop.rules
- 
- [Install]
- WantedBy=multi-user.target
+ Restart=on-failure
+ # Do not restart for intentional exits. See EXIT CODES section in auditd(8).
+ RestartPreventExitStatus=2 4 6
