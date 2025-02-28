@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Laurent Bigonville <bigon@users.noreply.github.com>
+Date: Fri, 12 Jul 2024 19:46:10 +0200
+Subject: [PATCH] backport: Do not try to override the value of the PYTHON
+ variable with non-existing PYTHON3 one (#383)
+
+Fixes: #382
+---
+ bindings/swig/python3/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/bindings/swig/python3/Makefile.am b/bindings/swig/python3/Makefile.am
+index db3126bc0f89784cea14d8707e42d97a1321193f..e159caffc72095b15e4990e48c32b2fa9402be74 100644
+--- a/bindings/swig/python3/Makefile.am
++++ b/bindings/swig/python3/Makefile.am
+@@ -26,7 +26,6 @@ AM_CPPFLAGS = -I. -I$(top_builddir) -I${top_srcdir}/lib $(PYTHON3_INCLUDES)
+ LIBS = $(top_builddir)/lib/libaudit.la
+ SWIG_FLAGS = -python -py3 -modern
+ SWIG_INCLUDES = -I. -I$(top_builddir) -I${top_srcdir}/lib $(PYTHON3_INCLUDES)
+-PYTHON = $(PYTHON3)
+ pyexec_PYTHON = audit.py
+ pyexec_LTLIBRARIES = _audit.la
+ pyexec_SOLIBRARIES = _audit.so
