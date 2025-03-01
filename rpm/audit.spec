@@ -23,7 +23,7 @@
 
 Summary: User space tools for 2.6 kernel auditing
 Name: audit
-Version: 3.1.2
+Version: 3.1.5
 Release: 1
 License: GPLv2+
 URL: http://people.redhat.com/sgrubb/audit/
@@ -33,6 +33,9 @@ Patch1: no_audisp_plugins.patch
 Patch2: doc_remove_zos_pages.patch
 Patch3: service_use_usr_sbin.patch
 Patch4: augenrules_use_usr_sbin.patch
+Patch5: 0001-backport-remove-use-deprecated-distutils-python-modu.patch
+Patch6: 0002-backport-Fix-make-distcheck.-Was-failing-to-have-cor.patch
+Patch7: 0003-backport-Do-not-try-to-override-the-value-of-the-PYT.patch
 BuildRequires: swig
 BuildRequires: kernel-headers >= 2.6.29
 BuildRequires: automake autoconf libtool
@@ -156,7 +159,6 @@ if [ $1 -ge 1 ]; then
 fi
 
 %files libs
-%defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license lgpl-2.1.txt
 /%{_libdir}/libaudit.so.1*
@@ -165,7 +167,6 @@ fi
 %{_mandir}/man5/libaudit.conf.5.gz
 
 %files libs-devel
-%defattr(-,root,root,-)
 %doc contrib/plugin
 %{_libdir}/libaudit.so
 %{_libdir}/libauparse.so
@@ -192,11 +193,9 @@ fi
 %attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
 
 %files libs-python3
-%defattr(-,root,root,-)
 %attr(755,root,root) /%{_libdir}/python3.?/site-packages
 
 %files
-%defattr(-,root,root,-)
 %doc README ChangeLog rules init.d/auditd.cron
 %{!?_licensedir:%global license %%doc}
 %license COPYING
