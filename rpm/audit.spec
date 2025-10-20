@@ -21,12 +21,12 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-Summary: User space tools for 2.6 kernel auditing
+Summary: User space tools for kernel auditing
 Name: audit
 Version: 3.1.5
 Release: 1
 License: GPLv2+
-URL: http://people.redhat.com/sgrubb/audit/
+URL: https://github.com/sailfishos/audit/
 Source0: %{name}-%{version}.tar.gz
 Source1: lgpl-2.1.txt
 Patch1: no_audisp_plugins.patch
@@ -110,7 +110,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libaudit.a
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libauparse.a
 
 find $RPM_BUILD_ROOT -name '*.la' -delete
-find $RPM_BUILD_ROOT%{_libdir}/python?.?/site-packages -name '*.a' -delete
+find $RPM_BUILD_ROOT%{python3_sitearch} -name '*.a' -delete
 
 # On platforms with 32 & 64 bit libs, we need to coordinate the timestamp
 touch -r ./audit.spec $RPM_BUILD_ROOT%{_sysconfdir}/libaudit.conf
@@ -193,7 +193,7 @@ fi
 %attr(644,root,root) %{_mandir}/man5/ausearch-expression.5.gz
 
 %files libs-python3
-%attr(755,root,root) /%{_libdir}/python3.?/site-packages
+%attr(755,root,root) %{python3_sitearch}/*
 
 %files
 %doc README ChangeLog rules init.d/auditd.cron
